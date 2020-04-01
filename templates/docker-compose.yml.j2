@@ -1,0 +1,91 @@
+version: '3.7'
+
+networks:
+  pg:
+    ipam:
+      config:
+        - subnet: "{{ subnet }}"
+
+volumes:
+{%- for node_id in all_node_ids %}
+  pg_{{ node_id }}_data:
+    driver: local
+{%- endfor %}
+
+services:
+{%- for node_id in all_node_ids %}
+  pg-{{ node_id }}:
+    image: bitnami/postgresql-repmgr
+    networks:
+      pg:
+        ipv4_address: "{{ backend_ips[node_id] }}"
+    extra_hosts:
+      - "pgpool:{{ delegate_ip }}"
+    ports:
+      - 5432
+    volumes:
+      - pg_{{ node_id }}_data:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_POSTGRES_PASSWORD=${POSTGRESQL_POSTGRES_PASSWORD}
+      - POSTGRESQL_USERNAME=${POSTGRESQL_USERNAME}
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
+      - REPMGR_PASSWORD=${REPMGR_PASSWORD}
+      - REPMGR_PRIMARY_HOST=${REPMGR_PRIMARY_HOST}
+      - REPMGR_PARTNER_NODES=${REPMGR_PARTNER_NODES}
+      - REPMGR_NODE_NAME=pg-{{ node_id }}
+      - REPMGR_NODE_NETWORK_NAME=pg-{{ node_id }}
+  pgpool-{{ node_id }}:
+    build:
+      context: ./docker/pgpool
+      dockerfile: Dockerfile
+    cap_add:
+      - NET_ADMIN
+    networks:
+      pg:
+        ipv4_address: "{{ pool_ips[node_id] }}"
+    extra_hosts:
+      - "pgpool:{{ delegate_ip }}"
+    ports:
+      - 5432
+      - 9000
+      - 9694
+    volumes:
+      - type: bind
+        source: ./out/pgpool-{{ node_id }}/pgpool.conf
+        target: /opt/bitnami/pgpool/conf/pgpool.conf
+        read_only: true
+      - type: bind
+        source: ./out/pgpool-{{ node_id }}/pool_hba.conf
+        target: /opt/bitnami/pgpool/conf/pool_hba.conf
+        read_only: true
+      - type: bind
+        source: ./out/pgpool-{{ node_id }}/pool_passwd
+        target: /opt/bitnami/pgpool/conf/pool_passwd
+        read_only: true
+      - type: bind
+        source: ./out/pgpool-{{ node_id }}/pcp.conf
+        target: /opt/bitnami/pgpool/etc/pcp.conf
+        read_only: true
+    environment:
+      - PGPOOL_BACKEND_NODES=${PGPOOL_BACKEND_NODES}
+      - PGPOOL_SR_CHECK_USER=${PGPOOL_SR_CHECK_USER}
+      - PGPOOL_SR_CHECK_PASSWORD=${PGPOOL_SR_CHECK_PASSWORD}
+      - PGPOOL_ENABLE_LDAP=${PGPOOL_ENABLE_LDAP}
+      - PGPOOL_POSTGRES_USERNAME=${PGPOOL_POSTGRES_USERNAME}
+      - PGPOOL_POSTGRES_PASSWORD=${PGPOOL_POSTGRES_PASSWORD}
+      - PGPOOL_ADMIN_USERNAME=${PGPOOL_ADMIN_USERNAME}
+      - PGPOOL_ADMIN_PASSWORD=${PGPOOL_ADMIN_PASSWORD}
+      - PGPOOL_ENABLE_LOAD_BALANCING=${PGPOOL_ENABLE_LOAD_BALANCING}
+{%- endfor %}
+  utility:
+    image: bitnami/pgpool
+    networks:
+      pg:
+    extra_hosts:
+      - "pgpool:{{ delegate_ip }}"
+    volumes:
+      - type: bind
+        source: ./out/pgpool-{{ all_node_ids|random }}/pool_passwd
+        target: /opt/bitnami/pgpool/conf/pool_passwd
+        read_only: true

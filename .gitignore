@@ -1,0 +1,5 @@
+.history/
+.vscode/
+generated/
+.env
+docker-compose.yml
