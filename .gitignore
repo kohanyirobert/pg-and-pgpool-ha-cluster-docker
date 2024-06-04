@@ -3,3 +3,4 @@
 generated/
 .env
 docker-compose.yml
+out
