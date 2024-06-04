@@ -27,6 +27,7 @@ By default **there are 3 PostgreSQL and 3 Pgpool-II nodes in the clusters**.
 ```ps1
 pip install pipenv
 pipenv shell
+pipenv install
 .\scripts\up.ps1
 ```
 
