@@ -858,7 +858,7 @@ backend_flag{{ loop.index0 }} = 'ALLOW_TO_FAILOVER'
 {% endfor %}
 use_watchdog = on
 wd_hostname = 'pgpool-{{ primary_node_id }}'
-delegate_IP = '{{ delegate_ip }}'
+delegate_ip = '{{ delegate_ip }}'
 trusted_servers = '{%- for other_node_id in other_node_ids -%}
   pgpool-{{ other_node_id }}
   {%- if not loop.last -%}
