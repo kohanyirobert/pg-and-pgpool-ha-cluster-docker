@@ -13,7 +13,7 @@ volumes:
 services:
 {%- for node_id in all_node_ids %}
   pg-{{ node_id }}:
-    image: bitnami/postgresql-repmgr
+    image: bitnami/postgresql-repmgr:16.3.0
     networks:
       pg:
         ipv4_address: "{{ backend_ips[node_id] }}"
@@ -77,7 +77,7 @@ services:
       - PGPOOL_ENABLE_LOAD_BALANCING=${PGPOOL_ENABLE_LOAD_BALANCING}
 {%- endfor %}
   utility:
-    image: bitnami/pgpool
+    image: bitnami/pgpool:4.5.2
     networks:
       pg:
     extra_hosts:
