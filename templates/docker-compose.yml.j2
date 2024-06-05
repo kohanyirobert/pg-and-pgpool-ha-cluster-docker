@@ -73,7 +73,7 @@ services:
       - PGPOOL_POSTGRES_PASSWORD=${PGPOOL_POSTGRES_PASSWORD}
       - PGPOOL_ADMIN_USERNAME=${PGPOOL_ADMIN_USERNAME}
       - PGPOOL_ADMIN_PASSWORD=${PGPOOL_ADMIN_PASSWORD}
-      - PGPOOL_ENABLE_LOAD_BALANCING=${PGPOOL_ENABLE_LOAD_BALANCING}
+      - PGPOOL_USER_CONF_FILE=/opt/bitnami/pgpool/conf/pgpool.conf.override
 {%- endfor %}
   utility:
     image: bitnami/pgpool:4.5.2
