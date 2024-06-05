@@ -50,8 +50,8 @@ services:
       - 9694
     volumes:
       - type: bind
-        source: ./out/pgpool-{{ node_id }}/pgpool.conf
-        target: /opt/bitnami/pgpool/conf/pgpool.conf
+        source: ./out/pgpool-{{ node_id }}/pgpool_node_id
+        target: /opt/bitnami/pgpool/conf/pgpool_node_id
         read_only: true
       - type: bind
         source: ./out/pgpool-{{ node_id }}/pool_hba.conf
