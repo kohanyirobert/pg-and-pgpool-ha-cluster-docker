@@ -12,12 +12,12 @@ class Context:
 
   def __init__(self):
     self.number_of_nodes = 3
-    self.postgres_password = 'postgres'
+    self.postgres_password = 'admin'
     self.admin_username = 'admin'
     self.admin_password = 'admin'
-    self.custom_username = 'test'
-    self.custom_password = 'test'
-    self.custom_database = 'test'
+    self.custom_username = 'admin'
+    self.custom_password = 'admin'
+    self.custom_database = 'admin'
     self.all_node_ids = tuple(range(self.number_of_nodes))
     self.subnet = '192.168.0.0/24'
     self.backend_ips = [f'192.168.0.1{x}' for x in self.all_node_ids]
