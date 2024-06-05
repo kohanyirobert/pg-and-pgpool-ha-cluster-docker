@@ -1,1 +1,1 @@
-docker-compose run --rm utility psql "host=pgpool user=test password=test" -c 'show pool_nodes;'
+docker-compose run --rm utility psql "host=pgpool user=admin password=admin" -c 'show pool_nodes;'
