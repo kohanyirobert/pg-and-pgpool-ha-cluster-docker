@@ -90,6 +90,11 @@ def generate_pcp_conf(ctx):
       admin_md5=pcp_conf_md5(ctx.admin_password),
     )
 
+def generate_pgpool_pool_id(ctx):
+  for node_id in ctx.all_node_ids:
+    with_template('./templates/pgpool_node_id.j2', f'./out/pgpool-{node_id}/pgpool_node_id',
+      node_id=node_id,
+    )
 
 def generate_docker_compose_yml(ctx):
   with_template('./templates/docker-compose.yml.j2', f'./docker-compose.yml',
@@ -107,6 +112,7 @@ def main(ctx):
   generate_pool_hba_conf(ctx)
   generate_pool_passwd(ctx)
   generate_pcp_conf(ctx)
+  generate_pgpool_pool_id(ctx)
   generate_docker_compose_yml(ctx)
 
 
