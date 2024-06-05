@@ -25,14 +25,6 @@ class Context:
     self.delegate_ip = '192.168.0.200'
 
 
-def pool_passwd_md5(username, password):
-  return md5(f'{password}{username}'.encode("utf8")).hexdigest()
-
-
-def pcp_conf_md5(password):
-  return md5(password.encode("utf8")).hexdigest()
-
-
 def with_template(template_path, output_path, **kwargs):
   with open(template_path, mode='r', encoding='utf8', newline='\n') as f:
     template = Template(f.read())
@@ -73,28 +65,12 @@ def generate_pool_hba_conf(ctx):
     )
 
 
-def generate_pool_passwd(ctx):
-  for node_id in ctx.all_node_ids:
-    with_template('./templates/pool_passwd.j2', f'./out/pgpool-{node_id}/pool_passwd',
-      all_node_ids=ctx.all_node_ids,
-      postgres_md5=pool_passwd_md5('postgres', ctx.postgres_password),
-      custom_username=ctx.custom_username,
-      custom_md5=pool_passwd_md5(ctx.custom_username, ctx.custom_password),
-    )
-
-
-def generate_pcp_conf(ctx):
-  for node_id in ctx.all_node_ids:
-    with_template('./templates/pcp.conf.j2', f'./out/pgpool-{node_id}/pcp.conf',
-      admin_username=ctx.admin_username,
-      admin_md5=pcp_conf_md5(ctx.admin_password),
-    )
-
 def generate_pgpool_pool_id(ctx):
   for node_id in ctx.all_node_ids:
     with_template('./templates/pgpool_node_id.j2', f'./out/pgpool-{node_id}/pgpool_node_id',
       node_id=node_id,
     )
+
 
 def generate_docker_compose_yml(ctx):
   with_template('./templates/docker-compose.yml.j2', f'./docker-compose.yml',
@@ -109,9 +85,6 @@ def generate_docker_compose_yml(ctx):
 def main(ctx):
   generate_dotenv(ctx)
   generate_pgpool_conf(ctx)
-  generate_pool_hba_conf(ctx)
-  generate_pool_passwd(ctx)
-  generate_pcp_conf(ctx)
   generate_pgpool_pool_id(ctx)
   generate_docker_compose_yml(ctx)
 

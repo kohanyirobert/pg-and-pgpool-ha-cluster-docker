@@ -32,3 +32,4 @@ heartbeat_hostname{{ other_node_id }} = 'pgpool-{{ other_node_id }}'
 heartbeat_port{{ other_node_id }} = 9694
 heartbeat_device{{ other_node_id }} = ''
 {% endfor %}
+pcp_listen_addresses = '*'
