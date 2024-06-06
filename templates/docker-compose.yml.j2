@@ -24,6 +24,7 @@ services:
     volumes:
       - pg_{{ node_id }}_data:/bitnami/postgresql
     environment:
+      - DISABLE_WELCOME_MESSAGE=yes
       - REPMGR_PARTNER_NODES=${REPMGR_PARTNER_NODES}
       - REPMGR_NODE_NAME=pg-{{ node_id }}
       - REPMGR_NODE_NETWORK_NAME=pg-{{ node_id }}
@@ -58,6 +59,7 @@ services:
         target: /opt/bitnami/pgpool/conf/pgpool.conf.override
         read_only: true
     environment:
+      - DISABLE_WELCOME_MESSAGE=yes
       - PGPOOL_BACKEND_NODES=${PGPOOL_BACKEND_NODES}
       - PGPOOL_SR_CHECK_USER=${PGPOOL_SR_CHECK_USER}
       - PGPOOL_SR_CHECK_PASSWORD=${PGPOOL_SR_CHECK_PASSWORD}
@@ -76,3 +78,5 @@ services:
       pg:
     extra_hosts:
       - "pgpool:{{ delegate_ip }}"
+    environment:
+      - DISABLE_WELCOME_MESSAGE=yes
