@@ -5,6 +5,18 @@ Example of running a multi-node PostgreSQL database cluster with one read-write 
 Based on this [tutorial](
 https://www.pgpool.net/docs/latest/en/html/example-cluster.html).
 
+## Versions
+
+- Docker Desktop 4.30.0 (149282)
+  - Docker version 26.1.1, build 4cf5afa
+  - Docker Compose version v2.27.0-desktop.2
+- bitnami/postgresql-repmgr:16.3.0
+  - postgres (PostgreSQL) 16.3
+  - repmgrd 5.4.1
+  - psql (PostgreSQL) 16.3
+- bitnami/pgpool:4.5.2
+  - pgpool-II version 4.5.2 (hotooriboshi)
+
 ## Notes
 
 * The `docker-compose.yml` is generated via `./scripts/generate.py`.
