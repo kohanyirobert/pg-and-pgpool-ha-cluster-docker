@@ -42,10 +42,10 @@ This starts up the cluster and generates several files.
 By default **there are 3 PostgreSQL and 3 Pgpool-II nodes in the clusters**.
 
 ```ps1
-pip install pipenv
+pip3 install pipenv
 pipenv shell
 pipenv install
-.\scripts\up.ps1
+./scripts/up.sh
 ```
 
 **It may take some time for nodes to settle down**.
@@ -53,20 +53,20 @@ To see exactly what kind of files are being generated look at `./templates`, but
 
 This displays the status of the PostgreSQL backends.
 
-```ps1
-.\scripts\pool_nodes.ps1
+```sh
+./scripts/pool_nodes.sh
 ```
 
 This displays the status of the Pgpool-II cluster.
 
 ```ps1
-.\scripts\watchdog_info.ps1
+./scripts/watchdog_info.sh
 ```
 
 Use this command to execute an SQL command through the master Pgpool-II node.
 
 ```ps1
-.\scripts\psql.ps1 "select 1"
+./scripts/psql.sh "select 1"
 ```
 
 This stops PostgreSQL/Pgpool-II nodes to see how the clusters respond to outages.
@@ -86,5 +86,5 @@ docker-compose logs --follow pgpool-3
 This stops the cluster and cleans up every generated files.
 
 ```ps1
-.\scripts\down.ps1
+./scripts/down.sh
 ```
