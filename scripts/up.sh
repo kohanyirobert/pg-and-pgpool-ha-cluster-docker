@@ -1,4 +1,4 @@
 ./scripts/down.sh
-python ./scripts/generate.py
+python3 ./scripts/generate.py
 docker-compose build
 docker-compose up --detach
